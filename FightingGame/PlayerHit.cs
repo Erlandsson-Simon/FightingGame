@@ -1,8 +1,8 @@
 using System;
 
-class fighting
+class hit
 {
-    public static int DoesPlayerHit()
+    public static int DoesPlayerHit(int playerOneHp, int playerTwoHp)
     {
         Random generator = new Random();
 

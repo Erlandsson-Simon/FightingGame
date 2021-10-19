@@ -5,48 +5,67 @@ int playerTwoHp = 100;
 
 int hitDamage;
 
+string playerOneName;
+string playerTwoName = "steve";
+
+Console.WriteLine("Type a name for player one");
+playerOneName = Console.ReadLine();
+
+playerTwoName = NameChooser.PlayerTwoNameChooser();
+
 while (playerOneHp > 0 & playerTwoHp > 0)
 {
     //Player one hit check
-    hitDamage = fighting.DoesPlayerHit();
-    if (hitDamage == 0)
+    hitDamage = hit.DoesPlayerHit(playerOneHp, playerTwoHp);
+
+    if (hitDamage == 0 & playerOneHp <= 0)
     {
-        Console.WriteLine("Player one missed!");
+        Console.WriteLine(".");
+    }
+    else if (hitDamage == 0)
+    {
+        Console.WriteLine(playerOneName + " missed!");
     }
     else
     {
-        Console.WriteLine("Player One hit and did " + hitDamage + "damage");
+        Console.WriteLine(playerOneName + " hit and did " + hitDamage + " damage");
     }
+
     playerTwoHp -= hitDamage;
-    Console.WriteLine("Player Two Remaining hp: " + playerTwoHp);
+    
+    if (playerTwoHp > 0)
+    {
+        Console.WriteLine(playerTwoName + " Remaining hp: " + playerTwoHp);
+    }
 
     //Player two hit check
-    hitDamage = fighting.DoesPlayerHit();
+    hitDamage = hit.DoesPlayerHit(playerOneHp, playerTwoHp);
 
-    if (hitDamage == 0)
+    if (hitDamage == 0 || playerOneHp > 0 || playerTwoHp > 0)
     {
-        Console.WriteLine("Player two missed!");
+        Console.WriteLine(playerTwoName + " missed!");
     }
     else
     {
-        Console.WriteLine("Player two hit and did " + hitDamage + "damage");
+        Console.WriteLine(playerTwoName + " hit and did " + hitDamage + " damage");
     }
 
     playerOneHp -= hitDamage;
-    Console.WriteLine("Player One Remaining hp: " + playerOneHp);
-
-    Console.WriteLine(hitDamage);
-
+    
+    if (playerOneHp > 0)
+    {
+        Console.WriteLine(playerOneName + " Remaining hp: " + playerOneHp);
+    }
 }
-if (playerOneHp < 0 & playerTwoHp > 0)
+if (playerOneHp <= 0 & playerTwoHp > 0)
 {
-    Console.WriteLine("Player one lost!");
+    Console.WriteLine(playerOneName + " lost!");
 }
-if (playerOneHp > 0 & playerTwoHp < 0)
+if (playerOneHp > 0 & playerTwoHp <= 0)
 {
-    Console.WriteLine("Player Two lost!");
+    Console.WriteLine(playerTwoName + " lost!");
 }
-if (playerOneHp < 0 & playerTwoHp < 0)
+if (playerOneHp <= 0 & playerTwoHp <= 0)
 {
     Console.WriteLine("The game has ended in a draw!");
 }
