@@ -8,16 +8,18 @@ int asciiSleepTime = 2000;
 int roundSleepTime = 1500;
 
 int roundNumber = 0;
-int hitDamage;
+int damageAmount;
 
 int gold = 100;
 int betAmount = 0;
-string goldText = "You have";
 string doesPlayerBet;
 Boolean timeToBet = true;
 
-int playerOneHp = 100;
-int playerTwoHp = 100;
+int playerOneStartHp = 100;
+int playerTwoStartHp = 100;
+
+int playerOneHp = playerOneStartHp;
+int playerTwoHp = playerTwoStartHp;
 
 string playerOneName;
 string playerTwoName;
@@ -27,19 +29,25 @@ string[] asciiPlayerTwo = File.ReadAllLines(@"asciiTextPlayerTwo");
 
 string startOver;
 
+/*-------------------------------------------
+Makes sure player name isnt too short or long
+---------------------------------------------*/
 playerOneName = NameChooser.PlayerOneNameChooser();
 
 while (game)
 {
+    /*---------------------------
+    Chooses a name for player two.
+    ----------------------------*/
     playerTwoName = NameChooser.PlayerTwoNameChooser();
 
     Console.WriteLine("----------------------------------------------------");
     Console.WriteLine("-------------------- Player ONE --------------------");
     Console.WriteLine("----------------------------------------------------");
 
-    /*----------------------------
-      Ascci for player one print
-    ----------------------------*/
+    /*------------------------
+    Ascci for player one print
+    -------------------------*/
     for (var i = 0; i < asciiPlayerOne.Length; i++)
     {
         Console.WriteLine(asciiPlayerOne[i]);
@@ -61,15 +69,13 @@ while (game)
 
     Thread.Sleep(roundSleepTime);
 
-    /*----------------------------
-            Main game start
-    ----------------------------*/
-
+    /*-------------
+    Main game start
+    --------------*/
     while (playerOneHp > 0 && playerTwoHp > 0)
     {
         while (timeToBet)
         {
-            Console.WriteLine(goldText + " " + gold);
             Console.WriteLine("Would you like to bet on your next fight?");
             Console.WriteLine("Type, Yes or No");
 
@@ -87,51 +93,31 @@ while (game)
 
         Console.WriteLine("Round: " + roundNumber + "----------------------------");
 
-        /*----------------------------
-            Player one hit check
-        ----------------------------*/
-        hitDamage = hit.DoesPlayerHit(playerOneHp, playerTwoHp);
+        /*Kollar ifall spelare ett gjort skada 
+        och hur mycket*/
+        damageAmount = hit.DoesPlayerHit();
 
-        if (hitDamage == 0 && playerOneHp <= 0)
-        {
-            Console.WriteLine(".");
-        }
-        else if (hitDamage == 0)
-        {
-            Console.WriteLine(playerOneName + " missed!");
-        }
-        else
-        {
-            Console.WriteLine(playerOneName + " hit and did " + hitDamage + " damage");
-            playerTwoHp -= hitDamage;
-        }
+        /*Kollar hur mycket hp spelare ett har 
+        kvar efter gjord skada och printar det*/
+        playerTwoHp = DamageTaken.PlayerTwoDamageTakenAmount(damageAmount, playerOneHp, playerTwoHp, playerOneName);
 
         if (playerOneHp > 0 && playerTwoHp > 0)
         {
             Console.WriteLine(playerTwoName + " Remaining hp: " + playerTwoHp);
         }
 
-        /*----------------------------
-            Player two hit check
-        ----------------------------*/
-        hitDamage = hit.DoesPlayerHit(playerOneHp, playerTwoHp);
+        /*Kollar ifall spelare två gjort skada 
+        och hur mycket*/
+        damageAmount = hit.DoesPlayerHit();
 
-        if (hitDamage == 0 && playerOneHp > 0 && playerTwoHp > 0)
-        {
-            Console.WriteLine(playerTwoName + " missed!");
-        }
-        else if (playerOneHp > 0 && playerTwoHp > 0)
-        {
-            Console.WriteLine(playerTwoName + " hit and did " + hitDamage + " damage");
-            playerOneHp -= hitDamage;
-        }
+        /*Kollar hur mycket hp spelare två har 
+        kvar efter gjord skada och printar det*/
+        playerOneHp = DamageTaken.PlayerOneDamageTakenAmount(damageAmount, playerOneHp, playerTwoHp, playerTwoName);
 
         if (playerOneHp > 0 && playerTwoHp > 0)
         {
             Console.WriteLine(playerOneName + " Remaining hp: " + playerOneHp);
         }
-
-        Console.WriteLine("");
 
         Thread.Sleep(roundSleepTime);
     }
@@ -175,11 +161,10 @@ while (game)
     if (startOver == "Restart" || startOver == "restart")
     {
         game = true;
-        goldText = "You now have";
         timeToBet = true;
 
-        playerOneHp = 100;
-        playerTwoHp = 100;
+        playerOneHp = playerOneStartHp;
+        playerTwoHp = playerTwoStartHp;
     }
     else
     {

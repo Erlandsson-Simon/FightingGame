@@ -15,16 +15,16 @@ class NameChooser
 
             if (name.Length > 10)
             {
-                Console.WriteLine("That name is to big, try another one.");
+                Console.WriteLine("That name is to big, try a shorter one.");
             }
             else if (name.Length < 3)
             {
-                Console.WriteLine("That name is to short, try another one.");
+                Console.WriteLine("That name is to short, try a longer one.");
             }
             else
             {
                 nameLength = false;
-                return name;
+
             }
         }
         return "";

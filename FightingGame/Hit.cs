@@ -2,22 +2,24 @@ using System;
 
 class hit
 {
-    public static int DoesPlayerHit(int playerOneHp, int playerTwoHp)
+    public static int DoesPlayerHit()
     {
+        int damageAmount;
+
         Random generator = new Random();
 
         int x = generator.Next(1, 3);
 
         if (x == 1)
         {
-            int damageAmount = generator.Next(10, 20);
-
-            return damageAmount;
+            damageAmount = generator.Next(10, 20);
         }
         else
         {
-            return 0;
+            damageAmount = 0;
         }
+
+        return damageAmount;
     }
 
 }
