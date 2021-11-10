@@ -2,6 +2,7 @@ using System;
 
 class hit
 {
+    /*Räknar ut ifall någon av spelarna gör skada och i sånna fall hur mycket*/
     public static int DoesPlayerHit()
     {
         int damageAmount;

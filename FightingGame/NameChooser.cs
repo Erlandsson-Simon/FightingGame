@@ -2,22 +2,23 @@ using System;
 
 class NameChooser
 {
-    public static string PlayerOneNameChooser()
+    /*säger till användaren att skriva in ett namn och ser sedan till 
+    att namnet håller en viss standard, exempelvis minst tre bokstäver*/
+    public static string PlayerOneNameChooser(string playerOneName)
     {
-        string name;
         Boolean nameLength = true;
 
         Console.WriteLine("Type a name for player one, atleast 3 letters, max 10 letters.");
 
         while (nameLength)
         {
-            name = Console.ReadLine();
+            playerOneName = Console.ReadLine();
 
-            if (name.Length > 10)
+            if (playerOneName.Length > 10)
             {
                 Console.WriteLine("That name is to big, try a shorter one.");
             }
-            else if (name.Length < 3)
+            else if (playerOneName.Length < 3)
             {
                 Console.WriteLine("That name is to short, try a longer one.");
             }
@@ -27,8 +28,10 @@ class NameChooser
 
             }
         }
-        return "";
+        return playerOneName;
     }
+
+    /*väljer ett namn till spelare två med hjälp av slupen*/
     public static string PlayerTwoNameChooser()
     {
         string playerTwoName;

@@ -20,7 +20,7 @@ int playerTwoStartHp = 100;
 int playerOneHp = playerOneStartHp;
 int playerTwoHp = playerTwoStartHp;
 
-string playerOneName;
+string playerOneName = "";
 string playerTwoName;
 
 string[] asciiPlayerOne = File.ReadAllLines(@"asciiTextPlayerOne");
@@ -32,7 +32,7 @@ string startOver;
 låter spelaren välja namn till spelare ett och ser 
 till att namnet inte är för långt och inte för kort
 --------------------------------------------------*/
-playerOneName = NameChooser.PlayerOneNameChooser();
+playerOneName = NameChooser.PlayerOneNameChooser(playerOneName);
 
 while (game)
 {
@@ -48,9 +48,10 @@ while (game)
     /*------------------------
     Ascci bild för spelare ett
     -------------------------*/
-    for (var i = 0; i < asciiPlayerOne.Length; i++)
+
+    foreach (string line in asciiPlayerOne)
     {
-        Console.WriteLine(asciiPlayerOne[i]);
+        Console.WriteLine(line);
     }
 
     Thread.Sleep(asciiSleepTime);
@@ -62,9 +63,9 @@ while (game)
     /*------------------------
     Ascci bild för spelare två
     -------------------------*/
-    for (var i = 0; i < asciiPlayerTwo.Length; i++)
+    foreach (string line in asciiPlayerTwo)
     {
-        Console.WriteLine(asciiPlayerTwo[i]);
+        Console.WriteLine(line);
     }
 
     Thread.Sleep(roundSleepTime);
@@ -77,6 +78,7 @@ while (game)
         /*Kollar ifall spelaren vill 
         betta och isåfall hur mycket*/
         betAmount = Bet.playerBet(timeToBet, betAmount, gold);
+        timeToBet = false;
         roundNumber += 1;
 
         Console.WriteLine("Round: " + roundNumber + "----------------------------");
