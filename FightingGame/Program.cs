@@ -12,7 +12,6 @@ int damageAmount;
 
 int gold = 100;
 int betAmount = 0;
-string doesPlayerBet;
 Boolean timeToBet = true;
 
 int playerOneStartHp = 100;
@@ -29,16 +28,17 @@ string[] asciiPlayerTwo = File.ReadAllLines(@"asciiTextPlayerTwo");
 
 string startOver;
 
-/*-------------------------------------------
-Makes sure player name isnt too short or long
----------------------------------------------*/
+/*------------------------------------------------
+låter spelaren välja namn till spelare ett och ser 
+till att namnet inte är för långt och inte för kort
+--------------------------------------------------*/
 playerOneName = NameChooser.PlayerOneNameChooser();
 
 while (game)
 {
-    /*---------------------------
-    Chooses a name for player two.
-    ----------------------------*/
+    /*------------------------------
+    Väljer ett namn till spelare två
+    -------------------------------*/
     playerTwoName = NameChooser.PlayerTwoNameChooser();
 
     Console.WriteLine("----------------------------------------------------");
@@ -46,7 +46,7 @@ while (game)
     Console.WriteLine("----------------------------------------------------");
 
     /*------------------------
-    Ascci for player one print
+    Ascci bild för spelare ett
     -------------------------*/
     for (var i = 0; i < asciiPlayerOne.Length; i++)
     {
@@ -59,9 +59,9 @@ while (game)
     Console.WriteLine("-------------------- Player TWO --------------------");
     Console.WriteLine("----------------------------------------------------");
 
-    /*----------------------------
-      Ascci for player two print
-    ----------------------------*/
+    /*------------------------
+    Ascci bild för spelare två
+    -------------------------*/
     for (var i = 0; i < asciiPlayerTwo.Length; i++)
     {
         Console.WriteLine(asciiPlayerTwo[i]);
@@ -69,26 +69,14 @@ while (game)
 
     Thread.Sleep(roundSleepTime);
 
-    /*-------------
-    Main game start
-    --------------*/
+    /*--------
+    spel start
+    ---------*/
     while (playerOneHp > 0 && playerTwoHp > 0)
     {
-        while (timeToBet)
-        {
-            Console.WriteLine("Would you like to bet on your next fight?");
-            Console.WriteLine("Type, Yes or No");
-
-            doesPlayerBet = Console.ReadLine();
-
-            if (doesPlayerBet == "Yes" || doesPlayerBet == "yes")
-            {
-                Console.WriteLine("How much would you like to bet, you have " + gold + " remaining gold");
-                betAmount = Convert.ToInt32(Console.ReadLine());
-            }
-            timeToBet = false;
-        }
-
+        /*Kollar ifall spelaren vill 
+        betta och isåfall hur mycket*/
+        betAmount = Bet.playerBet(timeToBet, betAmount, gold);
         roundNumber += 1;
 
         Console.WriteLine("Round: " + roundNumber + "----------------------------");
@@ -114,6 +102,7 @@ while (game)
         kvar efter gjord skada och printar det*/
         playerOneHp = DamageTaken.PlayerOneDamageTakenAmount(damageAmount, playerOneHp, playerTwoHp, playerTwoName);
 
+        /*kollar så att båda spelarna fortfarande lever*/
         if (playerOneHp > 0 && playerTwoHp > 0)
         {
             Console.WriteLine(playerOneName + " Remaining hp: " + playerOneHp);
@@ -122,33 +111,11 @@ while (game)
         Thread.Sleep(roundSleepTime);
     }
 
-    /*----------------------------
-          Have anyone died
-    ----------------------------*/
+    /*-------------------------
+    kollar ifall någon har dött
+    --------------------------*/
 
-    if (playerOneHp <= 0 && playerTwoHp > 0)
-    {
-        Console.WriteLine(playerOneName + " lost!");
-        Console.WriteLine("You lost " + betAmount + " gold");
-        gold -= betAmount;
-        Console.WriteLine("You now have " + gold + " gold");
-    }
-
-    if (playerOneHp > 0 && playerTwoHp <= 0)
-    {
-        Console.WriteLine(playerTwoName + " lost!");
-        Console.WriteLine("You earned " + betAmount + " gold");
-        gold += betAmount;
-        Console.WriteLine("You now have " + gold + " gold");
-    }
-
-    if (playerOneHp <= 0 && playerTwoHp <= 0)
-    {
-        Console.WriteLine("The game has ended in a draw!");
-        Console.WriteLine("You didn't earn or lose any gold.");
-        Console.WriteLine("You have " + gold + ".");
-
-    }
+    gold = Bet.GoldAfterBet(playerOneHp, playerTwoHp, playerOneName, playerTwoName, betAmount, gold);
 
     Console.WriteLine("If you would like to fight again, type restart");
 
