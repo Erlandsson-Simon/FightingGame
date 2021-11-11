@@ -23,6 +23,8 @@ int playerTwoHp = playerTwoStartHp;
 string playerOneName = "";
 string playerTwoName;
 
+/*här väljer jag att använda en array istället för en list för att 
+jag vet att den ändå ska vara statisk och array laddar även in snabbare*/
 string[] asciiPlayerOne = File.ReadAllLines(@"asciiTextPlayerOne");
 string[] asciiPlayerTwo = File.ReadAllLines(@"asciiTextPlayerTwo");
 

@@ -8,11 +8,26 @@ class NameChooser
     {
         Boolean nameLength = true;
 
-        Console.WriteLine("Type a name for player one, atleast 3 letters, max 10 letters.");
+        Console.WriteLine("Type a name for player one, atleast 3 letters, max 10 letters, no nummbers.");
 
-        while (nameLength)
+        bool success = true;
+        while (nameLength && success)
         {
             playerOneName = Console.ReadLine();
+            success = true;
+
+            /*Kollar varje bokstav i namnet så det inte är några bokstäver*/
+            foreach (char c in playerOneName)
+            {
+                bool temp;
+                int intTemp;
+                temp = int.TryParse(c.ToString(), out intTemp);
+                if (temp)
+                {
+                    success = false;
+                    break;
+                }
+            }
 
             if (playerOneName.Length > 10)
             {
@@ -22,10 +37,14 @@ class NameChooser
             {
                 Console.WriteLine("That name is to short, try a longer one.");
             }
+            else if (success == false)
+            {
+                Console.WriteLine("You can't have nummers in your name, try one without them.");
+                success = true;
+            }
             else
             {
                 nameLength = false;
-
             }
         }
         return playerOneName;

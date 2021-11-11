@@ -8,8 +8,10 @@ class Bet
 
         string doesPlayerBet;
         bool betQuestion = true;
+        bool betAmountTime = true;
 
-        while (timeToBet)
+        /*Kollar så att man har pengar att betta för*/
+        while (timeToBet && gold > 0)
         {
             Console.WriteLine("Would you like to bet on your next fight?");
 
@@ -21,9 +23,23 @@ class Bet
 
                 if (doesPlayerBet == "Yes" || doesPlayerBet == "yes")
                 {
-                    Console.WriteLine("How much would you like to bet, you have " + gold + " remaining gold");
-                    betAmount = Convert.ToInt32(Console.ReadLine());
-
+                    while (betAmountTime)
+                    {
+                        Console.WriteLine("How much would you like to bet, you have " + gold + " remaining gold");
+                        betAmount = Convert.ToInt32(Console.ReadLine());
+                        if (betAmount > gold)
+                        {
+                            Console.WriteLine("That is more than you have, try again.");
+                        }
+                        else if (betAmount < 1)
+                        {
+                            Console.WriteLine("You can't bet that low, try again.");
+                        }
+                        else
+                        {
+                            betAmountTime = false;
+                        }
+                    }
                     betQuestion = false;
                 }
                 else if (doesPlayerBet == "No" || doesPlayerBet == "no")
@@ -42,6 +58,7 @@ class Bet
         }
         return betAmount;
     }
+    /*Kollar ifall någon av spelarna har dött och isånnafall vem och räknar ut hur mycket pengar användaren har*/
     public static int GoldAfterBet(int playerOneHp, int playerTwoHp, string playerOneName, string playerTwoName, int betAmount, int gold)
     {
         if (playerOneHp <= 0 && playerTwoHp > 0)
